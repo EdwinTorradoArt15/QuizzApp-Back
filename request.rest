@@ -1,0 +1,30 @@
+GET http://localhost:5000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJOYW1lIjoiRWR3aW4xNSIsIm5hbWUiOiJFZHdpbiIsImVtYWlsIjoiZWR3aW50b3JyYWRvMTVAZ21haWwuY29tIiwiaWF0IjoxNjY2MjEwMDY5LCJleHAiOjE2NjYyMTAwODR9.eHhJ_OZS5azbke2j_0-qr7VB73NkAPZDS1hjvliXx-8
+
+###
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "usuario": "El patron",
+    "nombre": "Antonio",
+    "correo": "antonio@gmail.com",
+    "clave": "joder123456789",
+    "confClave": "joder123456789"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "correo": "edwintorrado15@gmail.com",
+    "clave": "chatopatronxd123"
+}
+
+###
+GET http://localhost:5000/token
+
+###
+DELETE http://localhost:5000/logout
+
