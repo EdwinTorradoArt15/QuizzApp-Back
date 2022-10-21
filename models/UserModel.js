@@ -13,6 +13,7 @@ const Users = db.define('usuario',{
     },
     correo:{
         type: DataTypes.STRING,
+        unique: true,
     },
     clave:{
         type: DataTypes.STRING,

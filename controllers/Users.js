@@ -19,11 +19,16 @@ export const Register = async(req,res) => {
     const{usuario,nombre,correo,clave, confClave} = req.body;
     // Verificamos que las contrasenias coincidan
     if(clave !== confClave) return res.status(400).json({msg: 'Las contraseñas no coinciden'}) 
-
-    // Encriptamos la contrasenia
-    const salt = await bcrypt.genSalt();
-    const hashClave = await bcrypt.hash(clave,salt);
+    
+    const checkEmail = await Users.findOne({
+        where:{
+            correo: correo
+        }
+    })
+    if(checkEmail) return res.status(400).json({msg: 'El correo ya esta registrado'})
     try{
+        const salt = await bcrypt.genSalt();
+        const hashClave = await bcrypt.hash(clave,salt);
         await Users.create({
             usuario: usuario,
             nombre: nombre,
@@ -67,11 +72,7 @@ export const Login = async(req,res) => {
                 id: userId
             }
         })
-        res.cookie('refreshToken', refreshToken,{
-            httpOnly: true,
-            maxAge: 24*60*60*1000,
-        })
-        res.json({accesToken});
+        res.status(200).json({accesToken,refreshToken});
     }catch(err){
         res.status(404).json({msg: 'Correo incorrecto'});
     }
