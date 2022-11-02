@@ -10,7 +10,10 @@ import db from "../config/Database.js";
     descripcion: {
       type: DataTypes.STRING
       // allowNull defaults to true
-    }
+    }/* ,
+    imagen: {
+      type: DataTypes.STRING
+    } */
   }, {
     // Other model options go here
   });

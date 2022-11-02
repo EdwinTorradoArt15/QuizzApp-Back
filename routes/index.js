@@ -5,6 +5,8 @@ import { refreshToken } from "../controllers/RefreshToken.js";
 import {
   mostrarCategorias,
   registarCategoria,
+  eliminarCategorias,
+  editarCategorias,
 } from "../controllers/Categories.js";
 import { registrarCuestionario } from "../controllers/Cuestionario.js";
 
@@ -21,8 +23,8 @@ router.delete("/logout", Logout);
 // Rutas de las categorias
 router.get("/categories", mostrarCategorias);
 router.post("/categories", registarCategoria);
-/* router.delete('/categories/:id', Register)
-router.put('/categories/:id', Register) */
+router.delete('/categories/:id', eliminarCategorias)
+router.put('/categories/:id', editarCategorias)
 
 //Rutas de los cuestionarios
 

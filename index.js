@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import db from './config/Database.js';
 import router from './routes/index.js';
+import fileUpload from 'express-fileupload';
 
 dotenv.config()
 // Inicializamos express
@@ -18,9 +19,13 @@ try{
 }
 
 // Middlewares
-app.use(cors({credentials: true, origin: 'http://localhost:5000'}));
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(cookieParser())
 app.use(express.json());
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : './uploads'
+}));
 app.use(router);
 
 // Iniciamos el servidor
