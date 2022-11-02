@@ -1,26 +1,36 @@
 import Categoria from "../models/CategoriaModel.js";
-
+import { uploadImage } from "../middleware/cloudinary.js";
 export const registarCategoria = async (req, res) => {
   console.log("Intentas pasar aunque sea");
-  const { nombre, descripcion } = req.body;
 
+  
+
+  const { nombre, descripcion } = req.body;
+  console.log(req.files);
+  console.log(nombre, descripcion);
   if (nombre !== undefined && descripcion !== undefined) {
     const categoriaExiste = await Categoria.findOne({
       where: {
         nombre: nombre,
       },
     });
+
     if (categoriaExiste) {
       return res.status(400).json({
         msg: "Ya esta registrada la categoria  ya esta registrado",
         success: false,
       });
     }
+
     try {
       await Categoria.create({
         nombre,
         descripcion,
       });
+      if(req.files?.image){
+        const resultado = await uploadImage(req.files.image.tempFilePath)
+        console.log(resultado);
+      }
       return res
         .status(201)
         .json({ msg: "Categoria creada correctamente", success: true });

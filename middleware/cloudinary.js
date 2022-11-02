@@ -1,9 +1,9 @@
 import { v2 as cloudinaryV2 } from 'cloudinary';
 
 cloudinaryV2.config({
-    cloud_name: 'edwintorrado',
-    api_key: '967816159971617',
-    api_secret: 'pO5_BS3I1adSByzd3n8h9N5ERWM',
+    cloud_name: 'dx5yemlrk',
+    api_key: '616947557185632',
+    api_secret: 'gl3L0nkGhJnJ1l5mKcSlB3ft4q0',
     secure: true
 })
 
