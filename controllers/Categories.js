@@ -6,7 +6,7 @@ export const registarCategoria = async (req, res) => {
   
 
   const { nombre, descripcion } = req.body;
-  console.log(req.files);
+  console.log("req files : " , req.files);
   console.log(nombre, descripcion);
   if (nombre !== undefined && descripcion !== undefined) {
     const categoriaExiste = await Categoria.findOne({
@@ -23,17 +23,22 @@ export const registarCategoria = async (req, res) => {
     }
 
     try {
-      await Categoria.create({
-        nombre,
-        descripcion,
-      });
+      let resultadoImg = undefined;
       if(req.files?.image){
-        const resultado = await uploadImage(req.files.image.tempFilePath)
-        console.log(resultado)
+        resultadoImg = await uploadImage(req.files.image.tempFilePath)
       }
-      return res
+      if(resultadoImg){
+        await Categoria.create({
+          nombre,
+          descripcion,
+          urlImage : resultadoImg?.secure_url,
+        });
+        return res
         .status(201)
         .json({ msg: "Categoria creada correctamente", success: true });
+      }else{
+        return res.status(400).json({ msg: "No se pudo crear la categoria, falta imagen", success: false });
+      }
     } catch (err) {
       console.error(err);
     }
@@ -52,7 +57,6 @@ export const editarCategorias = async (req, res) => {};
 export const mostrarCategorias = async (req, res) => {
   try {
     const listaCategorias = await Categoria.findAll();
-
     if (listaCategorias !== undefined) {
       return res.status(200).json({
         categorias: listaCategorias,

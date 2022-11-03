@@ -9,10 +9,10 @@ import db from "../config/Database.js";
     },
     descripcion: {
       type: DataTypes.STRING
-    }/* ,
-    imagen: {
+    } ,
+    urlImage: {
       type: DataTypes.STRING
-    } */
+    } 
   }, {
     // Other model options go here
   });
