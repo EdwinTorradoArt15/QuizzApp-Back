@@ -29,7 +29,7 @@ export const registarCategoria = async (req, res) => {
       });
       if(req.files?.image){
         const resultado = await uploadImage(req.files.image.tempFilePath)
-        console.log(resultado);
+        console.log(resultado)
       }
       return res
         .status(201)
