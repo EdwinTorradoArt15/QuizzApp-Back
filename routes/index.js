@@ -8,6 +8,7 @@ import {
   eliminarCategorias,
   editarCategorias,
 } from "../controllers/Categories.js";
+import fileUpload from "express-fileupload";
 import { registrarCuestionario } from "../controllers/Cuestionario.js";
 
 // Inicializamos express

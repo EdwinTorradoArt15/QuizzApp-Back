@@ -1,10 +1,8 @@
 import Categoria from "../models/CategoriaModel.js";
 import { uploadImage } from "../middleware/cloudinary.js";
+
 export const registarCategoria = async (req, res) => {
   console.log("Intentas pasar aunque sea");
-
-  
-
   const { nombre, descripcion } = req.body;
   console.log("req files : " , req.files);
   console.log(nombre, descripcion);
