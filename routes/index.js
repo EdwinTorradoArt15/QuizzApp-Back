@@ -9,7 +9,11 @@ import {
   editarCategorias,
 } from "../controllers/Categories.js";
 import fileUpload from "express-fileupload";
-import { registrarCuestionario } from "../controllers/Cuestionario.js";
+import {
+  mostrarTodosCuestionarios,
+  registrarCuestionario,
+  registrarPreguntas,
+} from "../controllers/Cuestionario.js";
 
 // Inicializamos express
 const router = express.Router();
@@ -24,13 +28,15 @@ router.delete("/logout", Logout);
 // Rutas de las categorias
 router.get("/categories", mostrarCategorias);
 router.post("/categories", registarCategoria);
-router.delete('/categories/:id', eliminarCategorias)
-router.put('/categories/:id', editarCategorias)
+/* router.delete('/categories/:id', eliminarCategorias)
+router.put('/categories/:id', editarCategorias) */
 
 //Rutas de los cuestionarios
 
 /* router.get('/cuestionaries', getUsers) */
-router.post('/cuestionaries', registrarCuestionario)
+router.post("/cuestionaries", registrarCuestionario);
+router.post("/cuestionaries/preguntas", registrarPreguntas);
+router.get("/cuestionaries/preguntas", mostrarTodosCuestionarios);
 /* router.delete('/cuestionaries/:id', Register)
 router.put('/cuestionaries/:id', Register)  */
 
