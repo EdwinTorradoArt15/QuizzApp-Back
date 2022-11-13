@@ -1,5 +1,8 @@
+import { QueryTypes } from "sequelize";
+import db from "../config/Database.js";
 import Categoria from "../models/CategoriaModel.js";
 import Cuestionario from "../models/CuestionarioModel.js";
+import Opcion from "../models/OpcionesModel.js";
 import Pregunta from "../models/PreguntasModel.js";
 import Users from "../models/UserModel.js";
 /* idCategoria:{
@@ -38,6 +41,7 @@ export const registrarCuestionario = async (req, res) => {
           tiempoTotal,
           idUsuarioCreador,
           nomCuest,
+          estado: false,
         });
 
         res.status(201).json({
@@ -67,19 +71,36 @@ export const registrarPreguntas = async (req, res) => {
 
   const listaPreguntas = data.preguntas;
 
+  console.log("Lista preguntas::", listaPreguntas);
   try {
-    //Creamos la pregunta
+    listaPreguntas.forEach(async (pregunta) => {
+      //Creamos la pregunta
+      const preguntaCreada = await Pregunta.create({
+        descripcion: pregunta.descripcion,
+        respuesta: pregunta.respuesta,
+        idCuestionario: pregunta.idCuestionario,
+      });
+      console.log("hola soy la pregunta creada:", preguntaCreada);
+      // Sacamos el id de la pregunta y hacemos el bulk Create de las opciones
+      const listaOpcionesPorPregunta = pregunta.opciones.map((opcion) => {
+        return {
+          descripcion: opcion.descripcion,
+          idPregunta: preguntaCreada.id,
+        };
+      });
+      const opcionesCreadasPorPregunta = await Opcion.bulkCreate(
+        listaOpcionesPorPregunta
+      );
 
-    const preguntaCreadas = await Pregunta.bulkCreate(listaPreguntas);
-
-    return res.status(201).json({
-      success: true,
-      msg: "Se crearon las preguntas correctamente",
+      return res.status(201).json({
+        success: true,
+        msg: "Se crearon las preguntas correctamente",
+      });
     });
   } catch (error) {
     return res.status(400).json({
       msg: "Hubo un error",
-      pregunta: listaPreguntas[0],
+
       success: false,
     });
   }
@@ -103,9 +124,38 @@ export const registrarPreguntas = async (req, res) => {
 } */
 };
 
+export const mostrarTodosCuestionariosPorUsuario = async (req, res) => {
+  const { idUsuarioCreador } = req.body;
+
+  try {
+    const listaCuestionarios = await db.query(
+      `SELECT cuestionario.id , cuestionario.tiempoTotal,cuestionario.nomCuest,cuestionario.idUsuarioCreador,cuestionario.idCategoria ,usuario.nombre as usuarioCreador ,categoria.nombre as nombreCategoria from cuestionario  inner join categoria on categoria.id=cuestionario.idCategoria inner join usuario on usuario.id=cuestionario.idUsuarioCreador where
+      cuestionario.idUsuarioCreador=${idUsuarioCreador} 
+    `,
+      { type: QueryTypes.SELECT }
+    );
+
+    res.status(200).json({
+      cuestionarios: listaCuestionarios,
+      msg: "Lista de cuestionarios",
+      success: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      msg: "Hubo un error",
+      success: false,
+    });
+  }
+};
+
 export const mostrarTodosCuestionarios = async (req, res) => {
   try {
-    const listaCuestionarios = await Cuestionario.findAll();
+    const listaCuestionarios = await db.query(
+      `SELECT cuestionario.id , cuestionario.tiempoTotal,cuestionario.nomCuest,cuestionario.idUsuarioCreador,cuestionario.idCategoria ,usuario.nombre as usuarioCreador ,categoria.nombre as nombreCategoria from cuestionario  inner join categoria on categoria.id=cuestionario.idCategoria inner join usuario on usuario.id=cuestionario.idUsuarioCreador 
+    `,
+      { type: QueryTypes.SELECT }
+    );
+
     res.status(200).json({
       cuestionarios: listaCuestionarios,
       msg: "Lista de cuestionarios",

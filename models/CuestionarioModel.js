@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 
-const {DataTypes} = Sequelize;
+const { DataTypes } = Sequelize;
 
 /* id Primaria	int(11)			No	Ninguna		AUTO_INCREMENT	Cambiar Cambiar	Eliminar Eliminar	
 Más Más
@@ -13,24 +13,29 @@ Más Más
 Más Más
 	5	nomCuest */
 
- // Definimos el modelo de la tabla usuarios
-const Cuestionario = db.define('cuestionario',{
-    idCategoria:{
-        type: DataTypes.INTEGER,
+// Definimos el modelo de la tabla usuarios
+const Cuestionario = db.define(
+  "cuestionario",
+  {
+    idCategoria: {
+      type: DataTypes.INTEGER,
     },
-    tiempoTotal:{
-        type: DataTypes.INTEGER,
+    tiempoTotal: {
+      type: DataTypes.INTEGER,
     },
-    idUsuarioCreador:{
-        type: DataTypes.INTEGER,
-      
+    idUsuarioCreador: {
+      type: DataTypes.INTEGER,
     },
-    nomCuest:{
-        type: DataTypes.STRING,
+    nomCuest: {
+      type: DataTypes.STRING,
     },
-  
-},{
-    tableName: 'cuestionario'
-})
+    estado: {
+      type: DataTypes.BOOLEAN,
+    },
+  },
+  {
+    tableName: "cuestionario",
+  }
+);
 
-export default Cuestionario
+export default Cuestionario;

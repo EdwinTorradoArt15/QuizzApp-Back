@@ -19,4 +19,4 @@ const Opcion = db.define(
   }
 );
 
-export default Cuestionario;
+export default Opcion;
