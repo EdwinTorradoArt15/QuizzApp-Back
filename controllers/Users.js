@@ -5,12 +5,37 @@ import jwt from "jsonwebtoken";
 export const getUsers = async (req,res) => {
     // Traemos todos los usuarios de la base de datos y los mostramos en formato json
     try{
-        const users = await Users.findAll({
-            attributes:['id','usuario','nombre', 'correo']
-        });
-        res.json(users);
+        const usuarios = await Users.findAll();
+        res.status(200).json({
+            success: true,
+            usuarios,
+            msg: 'Se obtuvieron los usuarios correctamente'
+
+        })
     }catch(err){
-        console.error(err);
+        res.status(400).json({
+            success: false,
+            msg: 'No se pudieron obtener los usuarios'
+        })
+    }
+}
+
+export const getUser = async (req,res) => {
+    // Traemos un usuario de la base de datos
+    try{
+        const {id} = req.params;
+        const usuario = await Users.findOne({
+            where:{
+                id
+            }
+        })
+        res.status(200).json({
+            success: true,
+            usuario,
+            msg: 'Se obtuvo el usuario correctamente'
+        })
+    }catch(err){
+
     }
 }
 
@@ -38,6 +63,31 @@ export const Register = async(req,res) => {
         res.json({msg: 'Usuario creado correctamente'});
     }catch(err){
         console.error(err);
+    }
+}
+
+export const UpdateUser = async(req,res) => {
+    // Actualizamos un usuario en la base de datos
+    const {id} = req.params;
+    const {usuario,nombre,correo,clave, confClave} = req.body;
+    // Verificamos que las contrasenias coincidan
+    if(clave !== confClave) return res.status(400).json({msg: 'Las contraseñas no coinciden'})
+    try{
+        const salt = await bcrypt.genSalt();
+        const hashClave = await bcrypt.hash(clave,salt);
+        await Users.update({
+            usuario: usuario,
+            nombre: nombre,
+            correo: correo,
+            clave: hashClave
+        },{
+            where:{
+                id: id
+            }
+        });
+        res.json({msg: 'Usuario actualizado correctamente'});
+    }catch(err){
+        res.status(404).json({msg: 'No se pudo actualizar el usuario'});
     }
 }
 

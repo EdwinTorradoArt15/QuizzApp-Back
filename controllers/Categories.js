@@ -48,10 +48,6 @@ export const registarCategoria = async (req, res) => {
   }
 };
 
-export const eliminarCategorias = async (req, res) => {};
-
-export const editarCategorias = async (req, res) => {};
-
 export const mostrarCategorias = async (req, res) => {
   try {
     const listaCategorias = await Categoria.findAll();

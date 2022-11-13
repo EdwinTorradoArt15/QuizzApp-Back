@@ -1,12 +1,9 @@
 import express from "express";
-import { getUsers, Register, Login, Logout } from "../controllers/Users.js";
-import { verifyToken } from "../middleware/VerifyToken.js";
+import { getUsers, Register, Login, Logout, UpdateUser, getUser } from "../controllers/Users.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import {
   mostrarCategorias,
   registarCategoria,
-  eliminarCategorias,
-  editarCategorias,
 } from "../controllers/Categories.js";
 import fileUpload from "express-fileupload";
 import {
@@ -19,25 +16,24 @@ import {
 const router = express.Router();
 
 // Rutas
-router.get("/users", verifyToken, getUsers);
+router.get("/users", getUsers);
+router.get("/users/:id", getUser);
 router.post("/users", Register);
 router.post("/login", Login);
+router.put('/users/update/:id', UpdateUser)
 router.post("/token", refreshToken);
 router.delete("/logout", Logout);
 
 // Rutas de las categorias
 router.get("/categories", mostrarCategorias);
 router.post("/categories", registarCategoria);
-/* router.delete('/categories/:id', eliminarCategorias)
-router.put('/categories/:id', editarCategorias) */
+
 
 //Rutas de los cuestionarios
 
-/* router.get('/cuestionaries', getUsers) */
 router.post("/cuestionaries", registrarCuestionario);
 router.post("/cuestionaries/preguntas", registrarPreguntas);
 router.get("/cuestionaries/preguntas", mostrarTodosCuestionarios);
-/* router.delete('/cuestionaries/:id', Register)
-router.put('/cuestionaries/:id', Register)  */
+
 
 export default router;
