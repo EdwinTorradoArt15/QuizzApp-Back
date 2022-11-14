@@ -68,9 +68,7 @@ export const Register = async(req,res) => {
 export const UpdateUser = async(req,res) => {
     // Actualizamos un usuario en la base de datos
     const {id} = req.params;
-    const {usuario,nombre,correo,clave, confClave} = req.body;
-    // Verificamos que las contrasenias coincidan
-    if(clave !== confClave) return res.status(400).json({msg: 'Las contraseñas no coinciden'})
+    const {usuario,nombre,correo,clave} = req.body;
     try{
         const salt = await bcrypt.genSalt();
         const hashClave = await bcrypt.hash(clave,salt);
