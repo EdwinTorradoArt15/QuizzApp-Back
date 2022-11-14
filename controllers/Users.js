@@ -41,9 +41,8 @@ export const getUser = async (req,res) => {
 
 export const Register = async(req,res) => {
     // Registramos un usuario en la base de datos
-    const{usuario,nombre,correo,clave, confClave} = req.body;
+    const{usuario,nombre,correo,clave} = req.body;
     // Verificamos que las contrasenias coincidan
-    if(clave !== confClave) return res.status(400).json({msg: 'Las contraseñas no coinciden'}) 
     
     const checkEmail = await Users.findOne({
         where:{
