@@ -24,8 +24,8 @@ import {
 const router = express.Router();
 
 // Rutas
-router.get("/users", getUsers);
-router.get("/users/:id", getUser);
+// router.get("/users", getUsers);
+router.get("/user/:id", getUser);
 router.post("/users", Register);
 router.post("/login", Login);
 router.put("/users/update/:id", UpdateUser);

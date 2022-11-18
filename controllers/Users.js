@@ -25,7 +25,7 @@ export const getUser = async (req,res) => {
     try{
         const {id} = req.params;
         const usuario = await Users.findOne({
-            where:{
+            where: {
                 id
             }
         })
@@ -35,7 +35,10 @@ export const getUser = async (req,res) => {
             msg: 'Se obtuvo el usuario correctamente'
         })
     }catch(err){
-
+        res.status(400).json({
+            success: false,
+            msg: 'No se pudo obtener el usuario'
+        })
     }
 }
 
@@ -69,6 +72,7 @@ export const UpdateUser = async(req,res) => {
     // Actualizamos un usuario en la base de datos
     const {id} = req.params;
     const {usuario,nombre,correo,clave} = req.body;
+    console.log(req.body);
     try{
         const salt = await bcrypt.genSalt();
         const hashClave = await bcrypt.hash(clave,salt);
