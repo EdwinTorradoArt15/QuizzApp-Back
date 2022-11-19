@@ -19,7 +19,7 @@ try {
 }
 
 // Middlewares
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: process.env.LOCALHOST_ORIGIN }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(
