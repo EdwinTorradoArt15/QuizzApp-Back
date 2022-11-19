@@ -18,6 +18,9 @@ const Users = db.define('usuario',{
     clave:{
         type: DataTypes.STRING,
     },
+    urlImage: {
+        type: DataTypes.STRING,
+    },
     refresh_token:{
         type: DataTypes.TEXT,
     }

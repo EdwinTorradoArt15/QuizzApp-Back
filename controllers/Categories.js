@@ -2,10 +2,7 @@ import Categoria from "../models/CategoriaModel.js";
 import { uploadImage } from "../middleware/cloudinary.js";
 
 export const registarCategoria = async (req, res) => {
-  console.log("Intentas pasar aunque sea");
   const { nombre, descripcion } = req.body;
-  console.log("req files : " , req.files);
-  console.log(nombre, descripcion);
   if (nombre !== undefined && descripcion !== undefined) {
     const categoriaExiste = await Categoria.findOne({
       where: {
@@ -22,19 +19,19 @@ export const registarCategoria = async (req, res) => {
 
     try {
       let resultadoImg = undefined;
-      if(req.files?.image){
+      if (req.files?.image) {
         resultadoImg = await uploadImage(req.files.image.tempFilePath)
       }
-      if(resultadoImg){
+      if (resultadoImg) {
         await Categoria.create({
           nombre,
           descripcion,
-          urlImage : resultadoImg?.secure_url,
+          urlImage: resultadoImg?.secure_url,
         });
         return res
-        .status(201)
-        .json({ msg: "Categoria creada correctamente", success: true });
-      }else{
+          .status(201)
+          .json({ msg: "Categoria creada correctamente", success: true });
+      } else {
         return res.status(400).json({ msg: "No se pudo crear la categoria, falta imagen", success: false });
       }
     } catch (err) {

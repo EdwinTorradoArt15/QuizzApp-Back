@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  getUsers,
   Register,
   Login,
   Logout,
@@ -12,7 +11,6 @@ import {
   mostrarCategorias,
   registarCategoria,
 } from "../controllers/Categories.js";
-import fileUpload from "express-fileupload";
 import {
   mostrarTodosCuestionarios,
   mostrarTodosCuestionariosPorUsuario,
@@ -24,7 +22,6 @@ import {
 const router = express.Router();
 
 // Rutas
-// router.get("/users", getUsers);
 router.get("/user/:id", getUser);
 router.post("/users", Register);
 router.post("/login", Login);

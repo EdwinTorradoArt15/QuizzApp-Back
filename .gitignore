@@ -1,5 +1,6 @@
 # node_modules
 node_modules
+/uploads
 
 # misc
-.env.local
+.env
