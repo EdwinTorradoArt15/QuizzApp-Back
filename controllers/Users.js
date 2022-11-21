@@ -27,8 +27,6 @@ export const getUser = async (req, res) => {
 
 export const Register = async (req, res) => {
     const { usuario, nombre, correo, clave } = req.body;
-    console.log('Datos del usuario -> ', usuario, nombre, correo, clave);
-    console.log('req files -> ', req.files);
     const checkEmail = await Users.findOne({
         where: {
             correo: correo
@@ -75,19 +73,39 @@ export const UpdateUser = async (req, res) => {
     const { usuario, nombre, correo, clave } = req.body;
     console.log(req.body);
     try {
-        const salt = await bcrypt.genSalt();
-        const hashClave = await bcrypt.hash(clave, salt);
-        await Users.update({
-            usuario: usuario,
-            nombre: nombre,
-            correo: correo,
-            clave: hashClave
-        }, {
-            where: {
-                id: id
-            }
-        });
-        res.json({ msg: 'Usuario actualizado correctamente' });
+        let resultadoImg = undefined;
+        if (req.files?.image) {
+            resultadoImg = await uploadImage(req.files.image.tempFilePath)
+        } if (resultadoImg) {
+            const salt = await bcrypt.genSalt();
+            const hashClave = await bcrypt.hash(clave, salt);
+            await Users.update({
+                usuario: usuario,
+                nombre: nombre,
+                correo: correo,
+                clave: hashClave,
+                urlImage: resultadoImg?.secure_url
+            }, {
+                where: {
+                    id
+                }
+            })
+            res.status(200).json({ msg: 'Usuario actualizado correctamente' })
+        } else {
+            const salt = await bcrypt.genSalt();
+            const hashClave = await bcrypt.hash(clave, salt);
+            await Users.update({
+                usuario: usuario,
+                nombre: nombre,
+                correo: correo,
+                clave: hashClave
+            }, {
+                where: {
+                    id
+                }
+            })
+            res.status(200).json({ msg: 'Usuario actualizado correctamente' })
+        }
     } catch (err) {
         res.status(404).json({ msg: 'No se pudo actualizar el usuario' });
     }
