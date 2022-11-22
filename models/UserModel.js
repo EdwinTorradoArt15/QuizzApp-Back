@@ -21,6 +21,9 @@ const Users = db.define('usuario',{
     urlImage: {
         type: DataTypes.STRING,
     },
+    urlPortada: {
+        type: DataTypes.STRING,
+    },
     refresh_token:{
         type: DataTypes.TEXT,
     }

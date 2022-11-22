@@ -35,30 +35,30 @@ export const Register = async (req, res) => {
     if (checkEmail) return res.status(400).json({ msg: 'El correo ya esta registrado' })
     try {
         let resultadoImg = undefined;
-        if (req.files?.image) {
-            resultadoImg = await uploadImage(req.files.image.tempFilePath)
-        } if (resultadoImg) {
-            const salt = await bcrypt.genSalt();
-            const hashClave = await bcrypt.hash(clave, salt);
-            await Users.create({
-                usuario: usuario,
-                nombre: nombre,
-                correo: correo,
-                clave: hashClave,
-                urlImage: resultadoImg?.secure_url
-            })
-            res.status(200).json({ msg: 'Usuario creado correctamente' })
-        } else {
-            const salt = await bcrypt.genSalt();
-            const hashClave = await bcrypt.hash(clave, salt);
-            await Users.create({
-                usuario: usuario,
-                nombre: nombre,
-                correo: correo,
-                clave: hashClave
-            })
-            res.status(200).json({ msg: 'Usuario creado correctamente' })
+        let resultadoPortada = undefined
+        if (req.files?.urlImage) {
+            console.log('entro a la imagen -> ')
+            resultadoImg = await uploadImage(req.files.urlImage.tempFilePath)
         }
+        if (req.files?.urlPortada) {
+            resultadoPortada = await uploadImage(req.files.urlPortada.tempFilePath)
+        }
+        const salt = await bcrypt.genSalt();
+        const hashClave = await bcrypt.hash(clave, salt);
+        let newUser = {
+            usuario: usuario,
+            nombre: nombre,
+            correo: correo,
+            clave: hashClave,
+        }
+        if (resultadoImg) {
+            newUser.urlImage = resultadoImg?.secure_url
+        }
+        if (resultadoPortada) {
+            newUser.urlPortada = resultadoPortada?.secure_url
+        }
+        await Users.create(newUser);
+        res.status(200).json({ success: true, msg: 'Usuario creado correctamente' })
     } catch (err) {
         res.status(400).json({
             success: false,
@@ -71,41 +71,35 @@ export const UpdateUser = async (req, res) => {
     // Actualizamos un usuario en la base de datos
     const { id } = req.params;
     const { usuario, nombre, correo, clave } = req.body;
-    console.log(req.body);
+    console.log(req.files);
+    console.log('id -> ', id)
     try {
         let resultadoImg = undefined;
-        if (req.files?.image) {
-            resultadoImg = await uploadImage(req.files.image.tempFilePath)
-        } if (resultadoImg) {
-            const salt = await bcrypt.genSalt();
-            const hashClave = await bcrypt.hash(clave, salt);
-            await Users.update({
-                usuario: usuario,
-                nombre: nombre,
-                correo: correo,
-                clave: hashClave,
-                urlImage: resultadoImg?.secure_url
-            }, {
-                where: {
-                    id
-                }
-            })
-            res.status(200).json({ msg: 'Usuario actualizado correctamente' })
-        } else {
-            const salt = await bcrypt.genSalt();
-            const hashClave = await bcrypt.hash(clave, salt);
-            await Users.update({
-                usuario: usuario,
-                nombre: nombre,
-                correo: correo,
-                clave: hashClave
-            }, {
-                where: {
-                    id
-                }
-            })
-            res.status(200).json({ msg: 'Usuario actualizado correctamente' })
+        let resultadoPortada = undefined
+        if (req.files?.urlImage) {
+            console.log('entro a la imagen perfil -> ')
+            resultadoImg = await uploadImage(req.files.urlImage.tempFilePath)
         }
+        if (req.files?.urlPortada) {
+            console.log('entro a la imagen portada -> ')
+            resultadoPortada = await uploadImage(req.files.urlPortada.tempFilePath)
+        }
+        const salt = await bcrypt.genSalt();
+        const hashClave = await bcrypt.hash(clave, salt);
+        let updateUser = {
+            usuario: usuario,
+            nombre: nombre,
+            correo: correo,
+            clave: hashClave,
+        }
+        if (resultadoImg) {
+            updateUser.urlImage = resultadoImg?.secure_url
+        }
+        if (resultadoPortada) {
+            updateUser.urlPortada = resultadoPortada?.secure_url
+        }
+        await Users.update( updateUser, {where: { id: id } })
+        res.status(200).json({ success: true, msg: 'Usuario actualizado correctamente' })
     } catch (err) {
         res.status(404).json({ msg: 'No se pudo actualizar el usuario' });
     }
