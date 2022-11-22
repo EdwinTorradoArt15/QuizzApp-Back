@@ -71,17 +71,13 @@ export const UpdateUser = async (req, res) => {
     // Actualizamos un usuario en la base de datos
     const { id } = req.params;
     const { usuario, nombre, correo, clave } = req.body;
-    console.log(req.files);
-    console.log('id -> ', id)
     try {
         let resultadoImg = undefined;
         let resultadoPortada = undefined
         if (req.files?.urlImage) {
-            console.log('entro a la imagen perfil -> ')
             resultadoImg = await uploadImage(req.files.urlImage.tempFilePath)
         }
         if (req.files?.urlPortada) {
-            console.log('entro a la imagen portada -> ')
             resultadoPortada = await uploadImage(req.files.urlPortada.tempFilePath)
         }
         const salt = await bcrypt.genSalt();
