@@ -1,4 +1,6 @@
 import Categoria from "../models/CategoriaModel.js";
+import Cuestionario from "../models/CuestionarioModel.js";
+import db from "../config/Database.js";
 import { uploadImage } from "../middleware/cloudinary.js";
 
 export const registarCategoria = async (req, res) => {
@@ -65,3 +67,30 @@ export const mostrarCategorias = async (req, res) => {
     console.error(err);
   }
 };
+
+export const mostrarCuestionariosPorCategoria = async (req, res) => {
+  const { id } = req.params
+  try {
+    const listaQuestionarios = await db.query(
+      `SELECT cuestionario.id , cuestionario.tiempoTotal,cuestionario.nomCuest,cuestionario.idUsuarioCreador,cuestionario.idCategoria ,usuario.nombre as usuarioCreador ,categoria.nombre as nombreCategoria from cuestionario  inner join categoria on categoria.id=cuestionario.idCategoria inner join usuario on usuario.id=cuestionario.idUsuarioCreador${id ? ' where cuestionario.idCategoria = ' + id : ''}
+    `, {
+      type: db.QueryTypes.SELECT
+    }
+    )
+    if (listaQuestionarios.length > 0) {
+      return res.status(200).json({
+        cuestionarios: listaQuestionarios,
+        success: true,
+        msg: "Se estan mostrando los cuestionarios"
+      })
+    } else {
+      res.status(204).json({
+        cuestionarios: [],
+        success: false,
+        msg: "No hay cuestionarios para mostrar"
+      })
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}

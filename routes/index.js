@@ -10,6 +10,7 @@ import { refreshToken } from "../controllers/RefreshToken.js";
 import {
   mostrarCategorias,
   registarCategoria,
+  mostrarCuestionariosPorCategoria
 } from "../controllers/Categories.js";
 import {
   mostrarTodosCuestionarios,
@@ -32,6 +33,7 @@ router.delete("/logout", Logout);
 // Rutas de las categorias
 router.get("/categories", mostrarCategorias);
 router.post("/categories", registarCategoria);
+router.get("/categorias/:id", mostrarCuestionariosPorCategoria);
 
 //Rutas de los cuestionarios
 

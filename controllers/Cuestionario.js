@@ -5,19 +5,6 @@ import Cuestionario from "../models/CuestionarioModel.js";
 import Opcion from "../models/OpcionesModel.js";
 import Pregunta from "../models/PreguntasModel.js";
 import Users from "../models/UserModel.js";
-/* idCategoria:{
-    type: DataTypes.INTEGER,
-},
-tiempoTotal:{
-    type: DataTypes.INTEGER,
-},
-idUsuarioCreador:{
-    type: DataTypes.INTEGER,
-  
-},
-nomCuest:{
-    type: DataTypes.STRING,
-}, */
 
 export const registrarCuestionario = async (req, res) => {
   const { idCategoria, tiempoTotal, idUsuarioCreador, nomCuest } = req.body;
