@@ -69,8 +69,6 @@ export const mostrarCategorias = async (req, res) => {
 };
 
 /**
-  *TODO: Crear funcionalidad de obtener categoria por id
-  *TODO: Crear funcionalidad de eliminar categoria
   *TODO: Crear funcionalidad de editar categoria
  */
 

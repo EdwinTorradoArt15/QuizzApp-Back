@@ -58,13 +58,12 @@ export const registrarPreguntas = async (req, res) => {
 
   const listaPreguntas = data.preguntas;
 
-  console.log("Lista preguntas::", listaPreguntas);
   try {
     listaPreguntas.forEach(async (pregunta) => {
       //Creamos la pregunta
       const preguntaCreada = await Pregunta.create({
         descripcion: pregunta.descripcion,
-        respuesta: pregunta.respuesta,
+        respuesta: pregunta.respuesta || "",
         idCuestionario: pregunta.idCuestionario,
       });
       console.log("hola soy la pregunta creada:", preguntaCreada);
@@ -91,24 +90,6 @@ export const registrarPreguntas = async (req, res) => {
       success: false,
     });
   }
-
-  /* {
-
-  idCuestionario:1,
-  preguntas:[{
-    idCuestionario:1,
-    descripcion:nombre,
-    respuesta:opcionRespuesta,
-    opciones:[
-      {
-        idPregunta,
-        descripcion
-      }
-    ]
-
-  }]
-
-} */
 };
 
 export const mostrarTodosCuestionariosPorUsuario = async (req, res) => {
@@ -151,6 +132,40 @@ export const mostrarTodosCuestionarios = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       msg: "Hubo un error",
+      success: false,
+    });
+  }
+};
+
+export const mostrarCuestionariosPorCategoria = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const listaQuestionarios = await db.query(
+      `SELECT cuestionario.id , cuestionario.tiempoTotal,cuestionario.nomCuest,cuestionario.idUsuarioCreador,cuestionario.idCategoria ,usuario.nombre as usuarioCreador ,categoria.nombre as nombreCategoria from cuestionario  inner join categoria on categoria.id=cuestionario.idCategoria inner join usuario on usuario.id=cuestionario.idUsuarioCreador${
+        id ? " where cuestionario.idCategoria = " + id : ""
+      }
+    `,
+      {
+        type: db.QueryTypes.SELECT,
+      }
+    );
+    if (listaQuestionarios.length > 0) {
+      return res.status(200).json({
+        cuestionarios: listaQuestionarios,
+        success: true,
+        msg: "Se estan mostrando los cuestionarios",
+      });
+    } else {
+      res.status(200).json({
+        cuestionarios: [],
+        success: false,
+        msg: "No hay cuestionarios para mostrar",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      msg: "Ocurrio un error",
       success: false,
     });
   }

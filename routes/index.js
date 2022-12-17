@@ -45,5 +45,6 @@ router.post("/cuestionaries", registrarCuestionario);
 router.post("/cuestionaries/preguntas", registrarPreguntas);
 router.get("/cuestionaries/preguntas", mostrarTodosCuestionarios);
 router.post("/cuestionaries/usuario", mostrarTodosCuestionariosPorUsuario);
+router.get("/cuestionaries/categoria/:id", mostrarCuestionariosPorCategoria);
 
 export default router;
