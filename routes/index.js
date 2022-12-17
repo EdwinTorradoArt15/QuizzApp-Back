@@ -10,7 +10,9 @@ import { refreshToken } from "../controllers/RefreshToken.js";
 import {
   mostrarCategorias,
   registarCategoria,
-  mostrarCuestionariosPorCategoria
+  mostrarCuestionariosPorCategoria,
+  deleteCategoria,
+  getCategoria
 } from "../controllers/Categories.js";
 import {
   mostrarTodosCuestionarios,
@@ -22,7 +24,7 @@ import {
 // Inicializamos express
 const router = express.Router();
 
-// Rutas
+// Rutas Usuarios
 router.get("/user/:id", getUser);
 router.post("/users", Register);
 router.post("/login", Login);
@@ -32,8 +34,10 @@ router.delete("/logout", Logout);
 
 // Rutas de las categorias
 router.get("/categories", mostrarCategorias);
-router.post("/categories", registarCategoria);
+router.get("/categories/:id", getCategoria);
 router.get("/categorias/:id", mostrarCuestionariosPorCategoria);
+router.post("/categories", registarCategoria);
+router.delete("/categories/:id", deleteCategoria)
 
 //Rutas de los cuestionarios
 

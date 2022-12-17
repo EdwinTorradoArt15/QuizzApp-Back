@@ -68,6 +68,56 @@ export const mostrarCategorias = async (req, res) => {
   }
 };
 
+/**
+  *TODO: Crear funcionalidad de obtener categoria por id
+  *TODO: Crear funcionalidad de eliminar categoria
+  *TODO: Crear funcionalidad de editar categoria
+ */
+
+export const getCategoria = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const categoria = await Categoria.findByPk(id);
+    if (categoria) {
+      return res.status(200).json({
+        categoria,
+        success: true,
+        msg: "Se encontro la categoria",
+      });
+    } else {
+      return res.status(400).json({
+        msg: "No se encontro la categoria",
+        success: false,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const deleteCategoria = async (req,res) => {
+  const {id} = req.params
+  try {
+    const categoria = await Categoria.findByPk(id)
+    if(categoria){
+      await categoria.destroy()
+      return res.status(200).json({
+        msg: "Categoria eliminada correctamente",
+        success: true
+      })
+    }else{
+      return res.status(400).json({
+        msg: "No se encontro la categoria",
+        success: false
+      })
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+
+
 export const mostrarCuestionariosPorCategoria = async (req, res) => {
   const { id } = req.params
   try {
@@ -84,7 +134,7 @@ export const mostrarCuestionariosPorCategoria = async (req, res) => {
         msg: "Se estan mostrando los cuestionarios"
       })
     } else {
-      res.status(204).json({
+        res.status(200).json({
         cuestionarios: [],
         success: false,
         msg: "No hay cuestionarios para mostrar"
