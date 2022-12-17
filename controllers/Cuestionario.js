@@ -170,3 +170,35 @@ export const mostrarCuestionariosPorCategoria = async (req, res) => {
     });
   }
 };
+
+export const mostrarCuestionarioPorId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const cuestionario = await db.query(
+      `SELECT cuestionario.id , cuestionario.tiempoTotal,cuestionario.nomCuest,cuestionario.idUsuarioCreador,cuestionario.idCategoria ,usuario.nombre as usuarioCreador ,categoria.nombre as nombreCategoria from cuestionario  inner join categoria on categoria.id=cuestionario.idCategoria inner join usuario on usuario.id=cuestionario.idUsuarioCreador where cuestionario.id=${id}
+    `,
+      {
+        type: db.QueryTypes.SELECT,
+      }
+    );
+    if (cuestionario.length > 0) {
+      return res.status(200).json({
+        cuestionario: cuestionario[0],
+        success: true,
+        msg: "Se esta mostrando el cuestionario",
+      });
+    } else {
+      res.status(200).json({
+        cuestionario: {},
+        success: false,
+        msg: "No hay cuestionarios para mostrar",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      msg: "Ocurrio un error",
+      success: false,
+    });
+  }
+}

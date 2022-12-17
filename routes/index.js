@@ -19,6 +19,7 @@ import {
   mostrarTodosCuestionariosPorUsuario,
   registrarCuestionario,
   registrarPreguntas,
+  mostrarCuestionarioPorId
 } from "../controllers/Cuestionario.js";
 
 // Inicializamos express
@@ -46,5 +47,6 @@ router.post("/cuestionaries/preguntas", registrarPreguntas);
 router.get("/cuestionaries/preguntas", mostrarTodosCuestionarios);
 router.post("/cuestionaries/usuario", mostrarTodosCuestionariosPorUsuario);
 router.get("/cuestionaries/categoria/:id", mostrarCuestionariosPorCategoria);
+router.get("/cuestionaries/:id", mostrarCuestionarioPorId);
 
 export default router;
