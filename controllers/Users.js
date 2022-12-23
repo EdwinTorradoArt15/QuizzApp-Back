@@ -25,6 +25,23 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const getUsers = async (req, res) => {
+  // Traemos un usuario de la base de datos
+  try {
+    const usuarios = await Users.findAll();
+    res.status(200).json({
+      success: true,
+      usuarios,
+      msg: "Se obtuvo el usuario correctamente",
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      msg: "No se pudo obtener el usuario",
+    });
+  }
+}
+
 export const Register = async (req, res) => {
   const { usuario, nombre, correo, clave } = req.body;
   const checkEmail = await Users.findOne({
@@ -73,7 +90,7 @@ export const Register = async (req, res) => {
 export const UpdateUser = async (req, res) => {
   // Actualizamos un usuario en la base de datos
   const { id } = req.params;
-  const { usuario, nombre, correo, clave } = req.body;
+  const { usuario, nombre, correo, clave, descripcion } = req.body;
   let updateUser = {};
   try {
     let resultadoImg = undefined;
@@ -86,8 +103,8 @@ export const UpdateUser = async (req, res) => {
     }
 
     if (clave === undefined || clave === null) {
-      console.log("Pasar por la clave vacia:");
       updateUser = {
+        descripcion: descripcion,
         usuario: usuario,
         nombre: nombre,
         correo: correo,
@@ -96,6 +113,7 @@ export const UpdateUser = async (req, res) => {
       const salt = await bcrypt.genSalt();
       const hashClave = await bcrypt.hash(clave, salt);
       updateUser = {
+        descripcion: descripcion,
         usuario: usuario,
         nombre: nombre,
         correo: correo,

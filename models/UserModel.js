@@ -8,6 +8,9 @@ const Users = db.define('usuario',{
     usuario:{
         type: DataTypes.STRING,
     },
+    descripcion: {
+        type: DataTypes.STRING,
+    },
     nombre:{
         type: DataTypes.STRING,
     },

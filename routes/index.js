@@ -5,6 +5,7 @@ import {
   Logout,
   UpdateUser,
   getUser,
+  getUsers
 } from "../controllers/Users.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
 import {
@@ -28,6 +29,7 @@ const router = express.Router();
 
 // Rutas Usuarios
 router.get("/user/:id", getUser);
+router.get("/users", getUsers);
 router.post("/users", Register);
 router.post("/login", Login);
 router.put("/users/update/:id", UpdateUser);
