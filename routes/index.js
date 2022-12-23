@@ -12,15 +12,16 @@ import {
   registarCategoria,
   mostrarCuestionariosPorCategoria,
   deleteCategoria,
-  getCategoria
+  getCategoria,
 } from "../controllers/Categories.js";
 import {
   mostrarTodosCuestionarios,
   mostrarTodosCuestionariosPorUsuario,
   registrarCuestionario,
   registrarPreguntas,
-  mostrarCuestionarioPorId
+  mostrarCuestionarioPorId,
 } from "../controllers/Cuestionario.js";
+import { mostrarOpcionesPorPregunta, mostrarPreguntasPorCuestionario } from "../controllers/Preguntas.js";
 
 // Inicializamos express
 const router = express.Router();
@@ -38,7 +39,7 @@ router.get("/categories", mostrarCategorias);
 router.get("/categories/:id", getCategoria);
 router.get("/categorias/:id", mostrarCuestionariosPorCategoria);
 router.post("/categories", registarCategoria);
-router.delete("/categories/:id", deleteCategoria)
+router.delete("/categories/:id", deleteCategoria);
 
 //Rutas de los cuestionarios
 
@@ -48,5 +49,10 @@ router.get("/cuestionaries/preguntas", mostrarTodosCuestionarios);
 router.post("/cuestionaries/usuario", mostrarTodosCuestionariosPorUsuario);
 router.get("/cuestionaries/categoria/:id", mostrarCuestionariosPorCategoria);
 router.get("/cuestionaries/:id", mostrarCuestionarioPorId);
+
+// Rutas de preguntas
+
+router.post("/preguntas", mostrarPreguntasPorCuestionario);
+router.post("/preguntas/opciones", mostrarOpcionesPorPregunta);
 
 export default router;
